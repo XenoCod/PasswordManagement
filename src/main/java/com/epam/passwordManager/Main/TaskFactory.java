@@ -9,8 +9,9 @@ import java.util.Map;
 public class TaskFactory {
 
     private static Map<Integer, UserChoice> map;
-    public TaskFactory(){
-        map= new HashMap<>();
+
+    public TaskFactory() {
+        map = new HashMap<>();
         map.put(1, new AddAccountToUser());
         map.put(2, new ViewUserPassword());
         map.put(3, new ListAllUserAccounts());
@@ -20,7 +21,8 @@ public class TaskFactory {
         map.put(7, new DeleteGroup());
     }
 
-    public UserChoice getInstance(int choice){
+    public UserChoice getInstance(int choice) {
         return map.getOrDefault(choice, new PleaseEnterCorrectChoice("Please enter a correct choice"));
+
     }
 }

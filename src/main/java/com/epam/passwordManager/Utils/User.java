@@ -1,6 +1,8 @@
 package com.epam.passwordManager.Utils;
 
 public class User {
+
+    //Singleton class
     private UserGroupDetails userGroupDetails;
     private String userName;
     private String password;

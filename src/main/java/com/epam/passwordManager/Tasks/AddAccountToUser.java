@@ -1,9 +1,7 @@
 package com.epam.passwordManager.Tasks;
 
-import com.epam.passwordManager.Utils.Account;
-import com.epam.passwordManager.Utils.Iterators;
-import com.epam.passwordManager.Utils.User;
-import com.epam.passwordManager.Utils.UserGroupDetails;
+import com.epam.passwordManager.Utils.*;
+import org.apache.logging.log4j.Level;
 
 import java.util.*;
 
@@ -12,6 +10,7 @@ public class AddAccountToUser implements UserChoice {
     private Scanner sc;
     private Iterators iterators;
     private static User user;
+    private static PMTLogger log;
 
     public AddAccountToUser() {
         iterators = new Iterators();
@@ -22,7 +21,7 @@ public class AddAccountToUser implements UserChoice {
 
     public void execute() throws Exception {
         //Setting the username
-        System.out.println("Enter the Master Username");
+        log.log(Level.INFO, "Enter the Master Username");
         String masterUserName = sc.next();
         user.setUserName(masterUserName);
 
@@ -35,49 +34,49 @@ public class AddAccountToUser implements UserChoice {
 
 
         //Take the user group name
-        System.out.println("A Group name should only contains Alphabets");
-        System.out.println("Enter the Group name");
+        log.log(Level.INFO,"A Group name should only contains Alphabets");
+        log.log(Level.INFO,"Enter the Group name");
         String groupName = sc.next();
 
         //If the provided groupName contains digit then simply return
         if (!new Validations().checkIfStringHasOnlyChars(groupName)) {
-            System.out.println("Sorry!, The provided groupName contains digits. Please provided only Characters");
+            log.log(Level.INFO,"Sorry!, The provided groupName contains digits. Please provided only Characters");
             return;
         }
 
 
         //Take the user current account name
-        System.out.println("Account Name should only consists of Alphabets");
-        System.out.println("Enter your Account name");
+        log.log(Level.INFO,"Account Name should only consists of Alphabets");
+        log.log(Level.INFO,"Enter your Account name");
         String accountName = sc.next();
 
         //Take the userName from the user
-        System.out.println("Enter your Username. Please enter a unique User Name");
+        log.log(Level.INFO,"Enter your Username. Please enter a unique User Name");
         String userName = sc.next();
 
 
         if (!new Validations().checkIfStringHasOnlyChars(accountName)) {
-            System.out.println("The provided account Name contains digits. Please enter only alphabets and try again");
+            log.log(Level.INFO,"The provided account Name contains digits. Please enter only alphabets and try again");
             return;
         }
 
 
-        System.out.println("Press 1. If you want to enter your password \nPress 2. If you want to generate random password");
+        log.log(Level.INFO,"Press 1. If you want to enter your password \nPress 2. If you want to generate random password");
         int userPasswordChoice = sc.nextInt();
         String password = "";
 
         //If user want to use his own password
         if (userPasswordChoice == 1) {
-            System.out.println("Enter your password");
+            log.log(Level.INFO,"Enter your password");
             password = sc.next();
         }
 
         //If the user wants to generate a random password
         else if (userPasswordChoice == 2) {
             //Generate a random password for the user and store it
-            System.out.println("Enter the password length for your password");
+            log.log(Level.INFO, "Enter the password length for your password");
             int passwordLen = sc.nextInt();
-            System.out.println("Enter tht characters for your password as a String");
+            log.log(Level.INFO, "Enter tht characters for your password as a String");
             String passwordUserChars = sc.next();
             password = generateRandomPassword(passwordLen, passwordUserChars);
         }
@@ -95,13 +94,13 @@ public class AddAccountToUser implements UserChoice {
 
         //If in the group the provided credentials already exits then simply return without adding
         if (user.getUserGroupDetails().getUserGroups().get(groupName).get(accountName).contains(account)) {
-            System.out.println("This user Name is already present. Please try again with a different name");
+            log.log(Level.INFO, "This user Name is already present. Please try again with a different name");
             return;
         }
         //Add account to the provided groupName and accountName
         user.getUserGroupDetails().getUserGroups().get(groupName).get(accountName).add(account);
 //        user.setUserGroupDetails(userGroupDetails);
-        System.out.println("Account added successfully!!!!");
+        log.log(Level.INFO, "Account added successfully!!!!");
 
         iterators.underLine();
     }

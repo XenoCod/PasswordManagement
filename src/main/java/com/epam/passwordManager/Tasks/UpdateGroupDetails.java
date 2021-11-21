@@ -2,7 +2,9 @@ package com.epam.passwordManager.Tasks;
 
 import com.epam.passwordManager.Utils.Account;
 import com.epam.passwordManager.Utils.Iterators;
+import com.epam.passwordManager.Utils.PMTLogger;
 import com.epam.passwordManager.Utils.User;
+import org.apache.logging.log4j.Level;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +15,7 @@ public class UpdateGroupDetails implements UserChoice {
     private Scanner sc;
     private Iterators iterators;
     private static User user;
+    private static PMTLogger log;
 
     public UpdateGroupDetails(){
         sc= new Scanner(System.in);
@@ -23,20 +26,20 @@ public class UpdateGroupDetails implements UserChoice {
     public void execute(){
         iterators.iterateOverGroups(user);
 
-        System.out.println("Enter the group name you want to update");
+        log.log(Level.INFO,"Enter the group name you want to update");
         String groupName = sc.next();
 
         Map<String, List<Account>> map = user.getUserGroupDetails().getUserGroups().get(groupName);
         if (map == null) {
-            System.out.println("Sorry no group exists with the given name");
+            log.log(Level.INFO,"Sorry no group exists with the given name");
             return;
         }
 
-        System.out.println("Enter the new Group name");
+        log.log(Level.INFO,"Enter the new Group name");
         String newGroupName = sc.next();
         user.getUserGroupDetails().getUserGroups().remove(groupName);
         user.getUserGroupDetails().getUserGroups().put(newGroupName, map);
-        System.out.println("Group name updated successfully!!!!");
+        log.log(Level.INFO,"Group name updated successfully!!!!");
         iterators.underLine();
     }
 }

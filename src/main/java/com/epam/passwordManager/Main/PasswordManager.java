@@ -3,6 +3,8 @@ package com.epam.passwordManager.Main;
 import com.epam.passwordManager.Exceptions.NoSuchGroupExistsException;
 import com.epam.passwordManager.Tasks.UserChoice;
 import com.epam.passwordManager.Tasks.Validations;
+import com.epam.passwordManager.Utils.PMTLogger;
+import org.apache.logging.log4j.Level;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -10,6 +12,7 @@ import java.util.Scanner;
 public class PasswordManager {
     private static Scanner sc;
     private static TaskFactory taskFactory;
+    private static PMTLogger log;
 
     public PasswordManager(){
         sc= new Scanner(System.in);
@@ -18,15 +21,17 @@ public class PasswordManager {
 
 
     private static void showChoices(){
-        System.out.println("Enter your choice among the following");
-        System.out.println("1. Create Password for an account");
-        System.out.println("2. Read Password for an account");
-        System.out.println("3. List all Password Account and groups");
-        System.out.println("4. Delete Password Account");
-        System.out.println("5. Modify or Update password Account");
-        System.out.println("6. Modify Group details");
-        System.out.println("7. Delete Group");
-        System.out.println("8. Exit the app");
+
+        log.log(Level.INFO,"Enter your choice among the following\n" +
+                "1. Create Password for an account\n" +
+                "2. Read Password for an account\n" +
+                "3. List all Password Account and groups\n" +
+                "4. Delete Password Account\n" +
+                "5. Modify or Update password Account\n" +
+                "6. Modify Group details\n" +
+                "7. Delete Group\n" +
+                "8. Exit the app");
+
     }
 
     private static void welcome(){

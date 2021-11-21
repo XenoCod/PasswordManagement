@@ -1,9 +1,12 @@
 package com.epam.passwordManager.Utils;
 
+import org.apache.logging.log4j.Level;
+
 import java.util.List;
 import java.util.Map;
 
 public class Iterators {
+    private static PMTLogger log;
 
     public void underLine() {
         System.out.println("=======================================");
@@ -23,18 +26,18 @@ public class Iterators {
         int accountId = 1;
         System.out.println("ID" + "         " + "Group Name" + "            " + "Account Name");
         for (String accountName : groupMap.keySet()) {
-            System.out.println(accountId + "         " + groupName + "              " + accountName);
+            log.log(Level.INFO,accountId + "         " + groupName + "              " + accountName);
             accountId++;
         }
         underLine();
     }
 
     public void iterateOverUserName(List<Account> accountList) {
-        System.out.println("The Username are as follows");
+        log.log(Level.INFO,"The Username are as follows");
         int index = 1;
-        System.out.println("ID" + "    " + "UserName" + "           " + "URL");
+        log.log(Level.INFO,"ID" + "    " + "UserName" + "           " + "URL");
         for (Account account : accountList) {
-            System.out.println(index + "    " + account.getUserName() + "           " + account.getUrl());
+            log.log(Level.INFO,index + "    " + account.getUserName() + "           " + account.getUrl());
             index++;
         }
     }

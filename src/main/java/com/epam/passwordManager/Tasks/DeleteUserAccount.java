@@ -1,9 +1,7 @@
 package com.epam.passwordManager.Tasks;
 
-import com.epam.passwordManager.Utils.Account;
-import com.epam.passwordManager.Utils.Iterators;
-import com.epam.passwordManager.Utils.User;
-import com.epam.passwordManager.Utils.UserGroupDetails;
+import com.epam.passwordManager.Utils.*;
+import org.apache.logging.log4j.Level;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +11,7 @@ public class DeleteUserAccount implements UserChoice{
     private Scanner sc;
     private Iterators iterators;
     private static User user;
+    private static PMTLogger log;
 
     public DeleteUserAccount(){
         sc= new Scanner(System.in);
@@ -23,7 +22,7 @@ public class DeleteUserAccount implements UserChoice{
     public void execute(){
         UserGroupDetails userGroupDetails = user.getUserGroupDetails();
         if (userGroupDetails == null) {
-            System.out.println("Sorry no account exits with the given name");
+            log.log(Level.INFO,"Sorry no account exits with the given name");
             return;
         }
 
@@ -31,21 +30,21 @@ public class DeleteUserAccount implements UserChoice{
         //Iterating through all the group associated with the user
         iterators.iterateOverGroups(user);
 
-        System.out.println("Enter the group name you want to see");
+        log.log(Level.INFO,"Enter the group name you want to see");
         String groupName = sc.next();
         Map<String, List<Account>> map = userGroupDetails.getUserGroups().get(groupName);
 
-        System.out.println("Enter the Account Name you want to see");
+        log.log(Level.INFO,"Enter the Account Name you want to see");
         String accountName = sc.next();
 
-        System.out.println("Enter the id of the account you want to remove");
+        log.log(Level.INFO,"Enter the id of the account you want to remove");
         List<Account> accounts = map.get(accountName);
 
         iterators.iterateOverUserName(accounts);
 
         int userAccountChoice = sc.nextInt();
         accounts.remove(userAccountChoice - 1);
-        System.out.println("Account remove successfully!!!!");
+        log.log(Level.INFO,"Account remove successfully!!!!");
         iterators.underLine();
     }
 }
