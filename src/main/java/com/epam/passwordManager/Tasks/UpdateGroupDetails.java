@@ -23,7 +23,7 @@ public class UpdateGroupDetails implements UserChoice {
         user= User.getUser();
     }
 
-    public void execute(){
+    public boolean execute(){
         iterators.iterateOverGroups(user);
 
         log.log(Level.INFO,"Enter the group name you want to update");
@@ -32,7 +32,7 @@ public class UpdateGroupDetails implements UserChoice {
         Map<String, List<Account>> map = user.getUserGroupDetails().getUserGroups().get(groupName);
         if (map == null) {
             log.log(Level.INFO,"Sorry no group exists with the given name");
-            return;
+            return false;
         }
 
         log.log(Level.INFO,"Enter the new Group name");
@@ -41,5 +41,6 @@ public class UpdateGroupDetails implements UserChoice {
         user.getUserGroupDetails().getUserGroups().put(newGroupName, map);
         log.log(Level.INFO,"Group name updated successfully!!!!");
         iterators.underLine();
+        return true;
     }
 }

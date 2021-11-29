@@ -20,11 +20,16 @@ public class ListAllUserAccounts implements UserChoice {
         user= User.getUser();
     }
 
-    public void execute(){
+    public boolean execute(){
+       listAllAccounts(user);
+        return true;
+    }
+
+    public boolean listAllAccounts(User user){
         UserGroupDetails userGroupDetails = user.getUserGroupDetails();
         if (userGroupDetails == null) {
             log.log(Level.INFO,"Sorry No accounts exists with the given name");
-            return;
+            return false;
         }
 
         //Iterating through all the group associated with the user
@@ -36,7 +41,7 @@ public class ListAllUserAccounts implements UserChoice {
 
         if (map.isEmpty()) {
             log.log(Level.INFO,"Sorry! There are no group for the current user. Please add an account");
-            return;
+            return false;
         }
 
         log.log(Level.INFO,"Enter the Account Name you want to see");
@@ -44,12 +49,14 @@ public class ListAllUserAccounts implements UserChoice {
 
         if (user.getUserGroupDetails().getUserGroups().get(groupName).get(accountName).isEmpty()) {
             log.log(Level.INFO,"Sorry! There are no account linked with current user");
-            return;
+            return false;
         }
 
         //Iterate over the all the userID of the given accountName
         iterators.iterateOverUserName(map.get(accountName));
 
         iterators.underLine();
+        return true;
     }
+
 }

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Level;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Iterators {
     private static PMTLogger log;
@@ -13,32 +14,35 @@ public class Iterators {
     }
 
 
-    public void iterateOverGroups(User user) {
-        System.out.println("The accounts with the current user are: ");
-        for (String groupName : user.getUserGroupDetails().getUserGroups().keySet()) {
-            iterateOverAccounts(user.getUserGroupDetails().getUserGroups().get(groupName), groupName);
-        }
-//        user.getUserGroupDetails().getUserGroups().keySet().stream().
+    public boolean iterateOverGroups(User user) {
+        PMTLogger.log(Level.INFO,"The accounts with the current user are: ");
+
+        user.getUserGroupDetails().getUserGroups().keySet().stream().forEach(i->{
+            iterateOverAccounts(user.getUserGroupDetails().getUserGroups().get(i), i);
+        });
         underLine();
+        return true;
     }
 
-    public void iterateOverAccounts(Map<String, List<Account>> groupMap, String groupName) {
-        int accountId = 1;
-        System.out.println("ID" + "         " + "Group Name" + "            " + "Account Name");
-        for (String accountName : groupMap.keySet()) {
-            log.log(Level.INFO,accountId + "         " + groupName + "              " + accountName);
-            accountId++;
-        }
+    public boolean iterateOverAccounts(Map<String, List<Account>> groupMap, String groupName) {
+        AtomicInteger accountId = new AtomicInteger(1);
+        PMTLogger.log(Level.INFO,"ID" + "         " + "Group Name" + "            " + "Account Name");
+
+        groupMap.keySet().stream().forEach(i->{
+            PMTLogger.log(Level.INFO, accountId.getAndIncrement() + "         " + groupName + "              " + i);
+        });
         underLine();
+        return true;
     }
 
-    public void iterateOverUserName(List<Account> accountList) {
+    public boolean iterateOverUserName(List<Account> accountList) {
         log.log(Level.INFO,"The Username are as follows");
-        int index = 1;
+
+        AtomicInteger index = new AtomicInteger(1);
         log.log(Level.INFO,"ID" + "    " + "UserName" + "           " + "URL");
-        for (Account account : accountList) {
-            log.log(Level.INFO,index + "    " + account.getUserName() + "           " + account.getUrl());
-            index++;
-        }
+        accountList.stream().forEach(i->{
+            PMTLogger.log(Level.INFO, index.getAndIncrement() + "    " + i.getUserName() + "           " + i.getUrl());
+        });
+        return true;
     }
 }

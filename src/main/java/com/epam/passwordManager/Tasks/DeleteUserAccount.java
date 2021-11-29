@@ -19,11 +19,11 @@ public class DeleteUserAccount implements UserChoice{
         user= User.getUser();
     }
 
-    public void execute(){
+    public boolean execute(){
         UserGroupDetails userGroupDetails = user.getUserGroupDetails();
         if (userGroupDetails == null) {
             log.log(Level.INFO,"Sorry no account exits with the given name");
-            return;
+            return false;
         }
 
 
@@ -41,10 +41,16 @@ public class DeleteUserAccount implements UserChoice{
         List<Account> accounts = map.get(accountName);
 
         iterators.iterateOverUserName(accounts);
-
         int userAccountChoice = sc.nextInt();
+        deleteAccount(accounts, userAccountChoice);
+        return true;
+    }
+
+    public boolean deleteAccount(List<Account> accounts, int userAccountChoice){
+
         accounts.remove(userAccountChoice - 1);
         log.log(Level.INFO,"Account remove successfully!!!!");
         iterators.underLine();
+        return true;
     }
 }

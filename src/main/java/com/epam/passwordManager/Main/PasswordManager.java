@@ -35,8 +35,8 @@ public class PasswordManager {
     }
 
     private static void welcome(){
-        System.out.println("Welcome to Password Management Tool");
-        System.out.println("Please enter your credentials to continue");
+        PMTLogger.log(Level.INFO,"Welcome to Password Management Tool");
+        PMTLogger.log(Level.INFO, "Please enter your credentials to continue");
     }
 
     public void passwordManager() throws Exception {
@@ -49,15 +49,17 @@ public class PasswordManager {
                     welcome();
                     firstTimeLogin = true;
                     if (!new Validations().validateMasterPassword(sc.next())) {
-                        System.out.println("Sorry Wrong Password");
+                        PMTLogger.log(Level.INFO, "Sorry Wrong Password");
                         firstTimeLogin = false;
                         continue;
                     }
                 }
                 showChoices();
                 int choice = sc.nextInt();
-                UserChoice userChoice= taskFactory.getInstance(choice);
-                userChoice.execute();
+                boolean res= takeAndExceuteUserChoice(choice);
+                if(!res) {
+                    break;
+                }
 
             } catch (InputMismatchException e) {
                 throw new InputMismatchException("Please enter a correct choice");
@@ -66,5 +68,10 @@ public class PasswordManager {
             }
 
         }
+    }
+
+    public boolean takeAndExceuteUserChoice(int choice) throws Exception {
+        UserChoice userChoice= taskFactory.getInstance(choice);
+        return userChoice.execute();
     }
 }

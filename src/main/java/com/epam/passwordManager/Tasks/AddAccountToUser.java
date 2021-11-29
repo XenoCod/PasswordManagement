@@ -10,7 +10,7 @@ public class AddAccountToUser implements UserChoice {
     private Scanner sc;
     private Iterators iterators;
     private static User user;
-    private static PMTLogger log;
+    private  PMTLogger log;
 
     public AddAccountToUser() {
         iterators = new Iterators();
@@ -19,11 +19,7 @@ public class AddAccountToUser implements UserChoice {
     }
 
 
-    public void execute() throws Exception {
-        //Setting the username
-        log.log(Level.INFO, "Enter the Master Username");
-        String masterUserName = sc.next();
-        user.setUserName(masterUserName);
+    public boolean execute() throws Exception {
 
         //Checking if the current user already has a group or not
         UserGroupDetails userGroupDetails;
@@ -34,14 +30,14 @@ public class AddAccountToUser implements UserChoice {
 
 
         //Take the user group name
-        log.log(Level.INFO,"A Group name should only contains Alphabets");
+        PMTLogger.log(Level.INFO,"A Group name should only contains Alphabets");
         log.log(Level.INFO,"Enter the Group name");
         String groupName = sc.next();
 
         //If the provided groupName contains digit then simply return
         if (!new Validations().checkIfStringHasOnlyChars(groupName)) {
             log.log(Level.INFO,"Sorry!, The provided groupName contains digits. Please provided only Characters");
-            return;
+            return false;
         }
 
 
@@ -57,29 +53,17 @@ public class AddAccountToUser implements UserChoice {
 
         if (!new Validations().checkIfStringHasOnlyChars(accountName)) {
             log.log(Level.INFO,"The provided account Name contains digits. Please enter only alphabets and try again");
-            return;
+            return false;
         }
 
 
         log.log(Level.INFO,"Press 1. If you want to enter your password \nPress 2. If you want to generate random password");
         int userPasswordChoice = sc.nextInt();
-        String password = "";
 
-        //If user want to use his own password
-        if (userPasswordChoice == 1) {
-            log.log(Level.INFO,"Enter your password");
-            password = sc.next();
-        }
 
-        //If the user wants to generate a random password
-        else if (userPasswordChoice == 2) {
-            //Generate a random password for the user and store it
-            log.log(Level.INFO, "Enter the password length for your password");
-            int passwordLen = sc.nextInt();
-            log.log(Level.INFO, "Enter tht characters for your password as a String");
-            String passwordUserChars = sc.next();
-            password = generateRandomPassword(passwordLen, passwordUserChars);
-        }
+
+        String password = userPasswordChoice == 1 ? sc.next() : generateRandomPassword();
+
 
         //Create a new Account for the user according to the user password and username
         Account account = new Account();
@@ -94,15 +78,16 @@ public class AddAccountToUser implements UserChoice {
 
         //If in the group the provided credentials already exits then simply return without adding
         if (user.getUserGroupDetails().getUserGroups().get(groupName).get(accountName).contains(account)) {
-            log.log(Level.INFO, "This user Name is already present. Please try again with a different name");
-            return;
+            PMTLogger.log(Level.INFO, "This user Name is already present. Please try again with a different name");
+            return false;
         }
         //Add account to the provided groupName and accountName
         user.getUserGroupDetails().getUserGroups().get(groupName).get(accountName).add(account);
 //        user.setUserGroupDetails(userGroupDetails);
-        log.log(Level.INFO, "Account added successfully!!!!");
+        PMTLogger.log(Level.INFO, "Account added successfully!!!!");
 
         iterators.underLine();
+        return true;
     }
 
     public void userValidationsChecks(UserGroupDetails userGroupDetails, String groupName, String accountName) {
@@ -122,12 +107,18 @@ public class AddAccountToUser implements UserChoice {
         }
     }
 
-    public String generateRandomPassword(int len, String userChars) {
-        Random random = new Random();
-        StringBuilder randomPassword = new StringBuilder(len);
+    public String generateRandomPassword() {
 
-        for (int i = 0; i < len; i++) {
-            randomPassword.append(userChars.charAt(random.nextInt(userChars.length())));
+        //Generate a random password for the user and store it
+        log.log(Level.INFO, "Enter the password length for your password");
+        int passwordLen = sc.nextInt();
+        log.log(Level.INFO, "Enter tht characters for your password as a String");
+        String passwordUserChars = sc.next();
+        Random random = new Random();
+        StringBuilder randomPassword = new StringBuilder(passwordLen);
+
+        for (int i = 0; i < passwordLen; i++) {
+            randomPassword.append(passwordUserChars.charAt(random.nextInt(passwordUserChars.length())));
         }
         return randomPassword.toString();
     }

@@ -22,7 +22,7 @@ public class UpdateAccount implements UserChoice {
         user= User.getUser();
     }
 
-    public void execute(){
+    public boolean execute(){
         iterators.iterateOverGroups(user);
 
         log.log(Level.INFO,"Enter the group name of the account you want to modify");
@@ -30,7 +30,7 @@ public class UpdateAccount implements UserChoice {
 
         if (user.getUserGroupDetails().getUserGroups().get(groupName) == null) {
             log.log(Level.INFO, "Sorry no group exists with the given name");
-            return;
+            return false;
         }
         log.log(Level.INFO,"Enter the account Name you want to update");
         String accountName = sc.next();
@@ -48,5 +48,6 @@ public class UpdateAccount implements UserChoice {
         account.setUserName(newAccountName);
         log.log(Level.INFO,"Account Updated successfully!!!!");
         iterators.underLine();
+        return true;
     }
 }

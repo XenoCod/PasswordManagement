@@ -1,6 +1,6 @@
 package com.epam.passwordManager.Main;
 
-import com.epam.passwordManager.Exceptions.PleaseEnterCorrectChoice;
+import com.epam.passwordManager.Tasks.PleaseEnterCorrectChoice;
 import com.epam.passwordManager.Tasks.*;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class TaskFactory {
     }
 
     public UserChoice getInstance(int choice) {
-        return map.getOrDefault(choice, new PleaseEnterCorrectChoice("Please enter a correct choice"));
+        return map.getOrDefault(choice, new PleaseEnterCorrectChoice());
 
     }
 }

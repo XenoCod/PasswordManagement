@@ -20,14 +20,19 @@ public class DeleteGroup implements UserChoice {
         user= User.getUser();
     }
 
-    public void execute(){
+    public boolean execute(){
         iterators.iterateOverGroups(user);
-
-        log.log(Level.INFO,"Enter the group name you want to delete");
+        PMTLogger.log(Level.INFO,"Enter the group name you want to delete");
         String groupName = sc.next();
+        deleteGroup(groupName);
+        return true;
+    }
+
+    public boolean deleteGroup(String groupName){
 
         user.getUserGroupDetails().getUserGroups().remove(groupName);
-        log.log(Level.INFO,"Group deleted successfully!!!!");
+        PMTLogger.log(Level.INFO,"Group deleted successfully!!!!");
         iterators.underLine();
+        return true;
     }
 }

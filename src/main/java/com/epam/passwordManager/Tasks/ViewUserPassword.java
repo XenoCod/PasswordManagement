@@ -19,12 +19,12 @@ public class ViewUserPassword implements UserChoice {
         user= User.getUser();
     }
 
-    public void execute(){
+    public boolean execute(){
         //If there is no group with the user then simply return
         UserGroupDetails userGroupDetails = user.getUserGroupDetails();
         if (userGroupDetails == null) {
             log.log(Level.INFO,"Sorry No account exists with the given name");
-            return;
+            return false;
         }
 
         iterators.iterateOverGroups(user);
@@ -38,7 +38,7 @@ public class ViewUserPassword implements UserChoice {
 
         if (accountsMap.isEmpty()) {
             log.log(Level.INFO, "Sorry! There are no group for the current user. Please add an account");
-            return;
+            return false;
         }
 
         log.log(Level.INFO,"Enter the Account Name you want to see");
@@ -46,7 +46,7 @@ public class ViewUserPassword implements UserChoice {
 
         if (user.getUserGroupDetails().getUserGroups().get(groupName).get(accountName).isEmpty()) {
             log.log(Level.INFO,"Sorry! There are no account linked with current user");
-            return;
+            return false;
         }
 
         //Iterate through all the accounts
@@ -67,5 +67,6 @@ public class ViewUserPassword implements UserChoice {
         }
 
        iterators.underLine();
+        return true;
     }
 }
